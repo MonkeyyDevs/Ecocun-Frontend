@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import "../Components/NavBar";
 import NavBar from "../Components/NavBar";
 import BottomNavBar from "../Components/BottomNavBar";
 import { Toaster } from "react-hot-toast";
@@ -19,20 +18,20 @@ export default function Layout() {
             reverseOrder={false}
             toastOptions={{
               style: {
-                fontSize: "18px", // más grande
-                padding: "20px", // más espacio interno
+                fontSize: "18px",
+                padding: "20px", 
                 borderRadius: "10px",
                 margin: "100px",
               },
               success: {
                 style: {
-                  background: "#16a34a", // verde Ecocun
+                  background: "#16a34a", 
                   color: "white",
                 },
               },
               error: {
                 style: {
-                  background: "#dc2626", // rojo para errores
+                  background: "#dc2626", 
                   color: "white",
                 },
               },
