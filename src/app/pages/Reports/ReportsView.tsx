@@ -37,15 +37,17 @@ const ReportsView: React.FC = () => {
         return res.json();
       })
       .then(res => {
-         if(res.data) {
-             const mapped = res.data.map((r: ReportFromApi) => ({
-                 folio: r.id.toString().padStart(4, '0'),
-                 ubicacion: `Lat: ${r.locLatitude.toFixed(4)}, Lon: ${r.locLongitude.toFixed(4)}`,
+         const list = Array.isArray(res.data) ? res.data : Array.isArray(res) ? res : [];
+         console.log('API response shape:', { keys: Object.keys(res), firstItem: list[0] });
+         if (list.length > 0) {
+             const mapped = list.map((r: ReportFromApi) => ({
+                 folio: String(r.id ?? '0000').padStart(4, '0'),
+                 ubicacion: `Lat: ${(r.locLatitude ?? 0).toFixed(4)}, Lon: ${(r.locLongitude ?? 0).toFixed(4)}`,
                  caso: mapCategoryToString(r.category),
                  status: mapStatusToString(r.status),
-                 description: r.description,
+                 description: r.description ?? '',
                  imageUrl: getImageUrl(r.imageUrl),
-                 lat: r.locLatitude, lon: r.locLongitude
+                 lat: r.locLatitude ?? 0, lon: r.locLongitude ?? 0
              }));
              setReports(mapped);
          } else {
