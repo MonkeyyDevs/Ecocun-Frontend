@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaCheck, FaTimes, FaMapMarkerAlt, FaUser } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { api } from "../../API/api";
+import { api } from "../API/api.ts";
 
 interface Report {
     id: number;

@@ -9,10 +9,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const OptionsView: React.FC = () => {
   const navigate = useNavigate();
-  const [level, setLevel] = useState("");
   const [puntos, setPuntos] = useState(0);
   const [monedas, setMonedas] = useState(0);
-  const [pointsToNextLevel, setPointsToNextLevel] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -28,17 +26,15 @@ const OptionsView: React.FC = () => {
           throw new Error("Error al obtener datos de gamificación");
         }
         const data = await response.json();
-        setLevel(data.level);
         setPuntos(data.totalPoints);
         setMonedas(data.coins);
-        setPointsToNextLevel(data.pointsToNextLevel);
         setLoaded(true);
       } catch (error) {
         console.error("Error al obtener datos de gamificación:", error);
       }
     };
     fetchGamificationData();
-  },);
+  }, [loaded]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -62,7 +58,7 @@ const OptionsView: React.FC = () => {
           </div>
         </div>
 
-        <GamificationSection level={level} points={puntos} coins={monedas} pointsToNextLevel={pointsToNextLevel} />
+        <GamificationSection points={puntos} coins={monedas} />
 
         {/* Menú Mis Reportes */}
         <div className="bg-white rounded-xl shadow-sm mb-4 overflow-hidden border border-gray-100">

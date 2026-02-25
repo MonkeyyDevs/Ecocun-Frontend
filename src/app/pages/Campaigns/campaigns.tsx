@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CampaignCard from "../../Components/CampaignCard/CampaignCard";
-import { FaMapMarkerAlt, FaCalendarAlt, FaPhone, FaCoins } from "react-icons/fa"; // Importamos icono de monedas
+import { FaMapMarkerAlt, FaCalendarAlt, FaPhone } from "react-icons/fa"; // Importamos icono de monedas
 
 const API_URL = import.meta.env.VITE_API_URL;
 
