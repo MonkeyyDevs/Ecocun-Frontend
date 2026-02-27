@@ -38,7 +38,7 @@ const AdminReportsView: React.FC = () => {
   const fetchReports = () => {
     setIsLoading(true);
     const token = localStorage.getItem('token'); 
-    fetch(`${API_URL}/api/reports/myreports`, { headers: { 'Authorization': `Bearer ${token}` } })
+    fetch(`${API_URL}/api/reports/allreports`, { headers: { 'Authorization': `Bearer ${token}` } })
           .then(res => {
             if (res.status === 401) throw new Error('Sesión expirada. Inicia sesión de nuevo.');
             if (!res.ok) throw new Error('Error al cargar reportes');
