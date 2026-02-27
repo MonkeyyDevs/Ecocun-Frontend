@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaFileAlt, FaSignOutAlt, FaChevronRight, FaUserAlt } from "react-icons/fa";
-import { GamificationSection } from "../../Components/GamificationSection";
+// import { GamificationSection } from "../../Components/GamificationSection"; // ! Desactivado por gamification
 
 const monkeyLogo = "/monkeydev_logo_blanco_slogan.png";
 const API_URL = import.meta.env.VITE_API_URL;
@@ -9,8 +9,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const OptionsView: React.FC = () => {
   const navigate = useNavigate();
-  const [puntos, setPuntos] = useState(0);
-  const [monedas, setMonedas] = useState(0);
+  // const [puntos, setPuntos] = useState(0); // ! Desactivado por gamification
+  // const [monedas, setMonedas] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -25,9 +25,9 @@ const OptionsView: React.FC = () => {
         if (!response.ok) {
           throw new Error("Error al obtener datos de gamificación");
         }
-        const data = await response.json();
-        setPuntos(data.totalPoints);
-        setMonedas(data.coins);
+        // const data = await response.json(); // ! Desactivado por gamification
+        // setPuntos(data.totalPoints);
+        // setMonedas(data.coins);
         setLoaded(true);
       } catch (error) {
         console.error("Error al obtener datos de gamificación:", error);

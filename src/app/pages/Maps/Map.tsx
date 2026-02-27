@@ -183,50 +183,8 @@ const MapView: React.FC = () => {
                             Explora reportes y puntos de interés.
                         </p>
                     </div>
-<<<<<<< HEAD
-                </div>
-            </motion.div>
-            <div
-                className="max-w-4xl mx-auto bg-white/95 rounded-2xl shadow-xl border border-green-100 overflow-hidden">
-                <div className="h-[60vh] md:h-[70vh]">
-                    <MapContainer
-                        center={targetLat && targetLng ? [targetLat, targetLng] : actualPosition}
-                        zoom={targetLat ? 16 : 12}
-                        className={styles.mapContainer}
-                        key={targetLat ? `${targetLat}-${targetLng}` : "default-map"}
-                        style={{height: "100%", width: "100%", zIndex: 0}}
-                    >
-                        <TileLayer
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            attribution="&copy; OpenStreetMap contributors"
-                        />
-                        {/* Marcadores de Reportes */}
-                        {reportes.map((r) => (
-                            <Marker
-                                key={`rep-${r.id}`}
-                                position={[r.locLatitude, r.locLongitude]}
-                            >
-                                <Popup>
-                                    <div className="p-1">
-                                        <h3 className="font-bold text-sm mb-1 text-red-600">
-                                            Reporte: {r.id}
-                                        </h3>
-                                        <p className="text-xs mb-2 text-gray-600">{r.description}</p>
-                                        {r.imageUrl && (
-                                            <img
-                                                src={getImageUrl(r.imageUrl) || ""}
-                                                className="rounded-md w-32 h-20 object-cover"
-                                                alt="Evidencia"
-                                            />
-                                        )}
-                                    </div>
-                                </Popup>
-                            </Marker>
-                        ))}
-=======
                 </motion.div>
             </div>
->>>>>>> 5e01a5ad010e8983fe8eb9c20d8ca42ec156b708
 
             <MapContainer
                 center={targetLat && targetLng ? [targetLat, targetLng] : actualPosition}
@@ -253,28 +211,6 @@ const MapView: React.FC = () => {
                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white shadow-sm shrink-0 ${getPopupIconColor(r.category)}`}>
                                          {getPopupIcon(r.category)}
                                     </div>
-<<<<<<< HEAD
-                                </Popup>
-                            </Marker>
-                        ))}
-                    </MapContainer>
-                 </div>
-            </div>
-            {/* --- Simbología debajo del mapa --- */}
-            <div
-                className="px-4 py-3 rounded-lg mt-4 mb-8 border-green-100 bg-white/95 flex flex-wrap gap-4 text-xs md:text-sm text-gray-700">
-                <div className="flex items-center gap-2">
-                    <span className="inline-block w-3 h-3 rounded-full bg-sky-500"/>
-                    <span>Reportes ciudadanos</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <span className="inline-block w-3 h-3 rounded-full bg-green-500"/>
-                    <span>Centros de acopio</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <span className="inline-block w-3 h-3 rounded-full bg-purple-500"/>
-                    <span>Tu ubicación aproximada</span>
-=======
                                     <h3 className="font-bold text-base text-gray-800 leading-tight line-clamp-1">
                                         {getCategoryName(r.category)}
                                     </h3>
@@ -351,7 +287,6 @@ const MapView: React.FC = () => {
                         <div className="w-px h-6 bg-gray-200 mx-1"></div>
                         <LeyendaItem icon={FaRecycle} color="bg-green-700" label="Acopio" />
                     </div>
->>>>>>> 5e01a5ad010e8983fe8eb9c20d8ca42ec156b708
                 </div>
             </div>
 
