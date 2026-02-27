@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import ReportCard, { ReportCardProps } from '../../Components/ReportCard/ReportCard';
 import { mapCategoryToString, mapStatusToString } from '../../utils/enumTranslators';
 import toast from 'react-hot-toast';
-
+// ! SE ESTA USANDO ESTE COMPONENTE????
 const API_URL = import.meta.env.VITE_API_URL;
 
 interface ReportFromApi { 
@@ -24,7 +24,7 @@ interface ExtendedReport extends ReportCardProps {
   rawStatus: number | string;
   lat: number;
   lon: number;
-  [key: string]: any; 
+  // [key: string]: any; 
 }
 
 const AdminReportsView: React.FC = () => {
@@ -38,27 +38,32 @@ const AdminReportsView: React.FC = () => {
   const fetchReports = () => {
     setIsLoading(true);
     const token = localStorage.getItem('token'); 
-    fetch(`${API_URL}/api/reports/allreports?page=1&limit=100`, { headers: { 'Authorization': `Bearer ${token}` } })
-      .then(res => res.json())
-      .then(res => {
-         if(res.data) {
-             const mapped = res.data.map((r: ReportFromApi) => ({
-                 id: r.id, 
-                 rawStatus: r.status, 
-                 folio: r.id.toString().padStart(4, '0'),
-                 ubicacion: `${r.locLatitude.toFixed(4)}, ${r.locLongitude.toFixed(4)}`,
-                 caso: mapCategoryToString(r.category),
-                 status: mapStatusToString(r.status), 
-                 description: r.description,
-                 imageUrl: getImageUrl(r.imageUrl),
-                 lat: r.locLatitude, 
-                 lon: r.locLongitude
-             }));
-             setReports(mapped);
-         }
-      })
-      .catch(err => console.error(err))
-      .finally(() => setIsLoading(false));
+    fetch(`${API_URL}/api/reports/myreports`, { headers: { 'Authorization': `Bearer ${token}` } })
+          .then(res => {
+            if (res.status === 401) throw new Error('Sesión expirada. Inicia sesión de nuevo.');
+            if (!res.ok) throw new Error('Error al cargar reportes');
+            return res.json();
+          })
+          .then(res => {
+             const list = Array.isArray(res.data) ? res.data : Array.isArray(res) ? res : [];
+             console.log('API response shape:', { keys: Object.keys(res), firstItem: list[0] });
+             if (list.length > 0) {
+                 const mapped = list.map((r: ReportFromApi) => ({
+                     folio: String(r.id ?? '0000').padStart(4, '0'),
+                     ubicacion: `Lat: ${(r.locLatitude ?? 0).toFixed(4)}, Lon: ${(r.locLongitude ?? 0).toFixed(4)}`,
+                     caso: mapCategoryToString(r.category),
+                     status: mapStatusToString(r.status),
+                     description: r.description ?? '',
+                     imageUrl: getImageUrl(r.imageUrl),
+                     lat: r.locLatitude ?? 0, lon: r.locLongitude ?? 0
+                 }));
+                 setReports(mapped);
+             } else {
+                 setReports([]);
+             }
+          })
+          // .catch(err => setError(err.message))
+          .finally(() => setIsLoading(false));
   };
 
   useEffect(() => {

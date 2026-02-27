@@ -20,7 +20,7 @@ interface Reporte {
     locLongitude: number;
     description: string;
     category: string | number;
-    imageUrl?: string | null;
+    blobName?: string | null;
     createdAt?: string; 
 }
 
@@ -222,9 +222,9 @@ const MapView: React.FC = () => {
                                 </p>
                                 
                                 {/* Imagen */}
-                                {r.imageUrl ? (
+                                {r.blobName ? (
                                     <img
-                                        src={getImageUrl(r.imageUrl) || ""}
+                                        src={getImageUrl(r.blobName) || ""}
                                         className="rounded-xl w-full h-36 object-cover border border-gray-100 shadow-sm"
                                         alt="Evidencia"
                                     />
