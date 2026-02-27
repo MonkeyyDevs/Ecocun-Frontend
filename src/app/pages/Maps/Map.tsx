@@ -169,7 +169,7 @@ const MapView: React.FC = () => {
                                 <Popup>
                                     <div className="p-1">
                                         <h3 className="font-bold text-sm mb-1 text-red-600">
-                                            Reporte: {r.category}
+                                            Reporte: {r.id}
                                         </h3>
                                         <p className="text-xs mb-2 text-gray-600">{r.description}</p>
                                         {r.imageUrl && (
@@ -209,7 +209,7 @@ const MapView: React.FC = () => {
                             </Marker>
                         ))}
                     </MapContainer>
-                </div>
+                 </div>
             </div>
             {/* --- Simbología debajo del mapa --- */}
             <div

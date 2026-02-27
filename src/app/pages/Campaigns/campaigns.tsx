@@ -176,10 +176,10 @@ const Campaigns: React.FC = () => {
                       ) : (
                         <>
                           <span className="text-lg">¡Participar ahora!</span>
-                          <div className="flex items-center gap-3 text-xs bg-white/20 px-3 py-1 rounded-full">
+                          {/* <div className="flex items-center gap-3 text-xs bg-white/20 px-3 py-1 rounded-full">
                              <span className="flex items-center gap-1">✨ +10 Pts</span>
                              <span className="flex items-center gap-1">🪙 +5 Monedas</span>
-                          </div>
+                          </div> */} {/* // ! Desactivado por gamification */ }
                         </>
                       )}
                     </button>
