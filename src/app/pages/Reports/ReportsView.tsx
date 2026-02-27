@@ -106,7 +106,7 @@ const ReportsView: React.FC = () => {
       {/* MODAL DETALLES */}
       {selectedReport && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center p-4 z-50 animate-fade-in" onClick={() => setSelectedReport(null)}>
-          <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
+          <div className="bg-white w-full max-w-sm max-h-[75vh] rounded-2xl shadow-2xl overflow-y-auto" onClick={e => e.stopPropagation()}>
             
             <div className="bg-gray-50 p-4 border-b border-gray-100 flex justify-between items-center">
               <div>
