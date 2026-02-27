@@ -16,7 +16,7 @@ interface ReportFromApi {
   category: number | string; 
   status: number | string; 
   createdAt: string; 
-  imageUrl?: string; 
+  blobName?: string; 
 }
 
 interface ExtendedReport extends ReportCardProps {
@@ -54,7 +54,7 @@ const AdminReportsView: React.FC = () => {
                      caso: mapCategoryToString(r.category),
                      status: mapStatusToString(r.status),
                      description: r.description ?? '',
-                     imageUrl: getImageUrl(r.imageUrl),
+                     imageUrl: getImageUrl(r.blobName),
                      lat: r.locLatitude ?? 0, lon: r.locLongitude ?? 0
                  }));
                  setReports(mapped);
