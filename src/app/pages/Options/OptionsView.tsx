@@ -58,7 +58,7 @@ const OptionsView: React.FC = () => {
           </div>
         </div>
 
-        <GamificationSection points={puntos} coins={monedas} />
+       {/* <GamificationSection points={puntos} coins={monedas} /> */}
 
         {/* Menú Mis Reportes */}
         <div className="bg-white rounded-xl shadow-sm mb-4 overflow-hidden border border-gray-100">
