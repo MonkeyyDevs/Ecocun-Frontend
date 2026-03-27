@@ -8,13 +8,13 @@ import toast from 'react-hot-toast';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const STATUS_OPTIONS = [
-  { value: 1,      label: 'Nuevo',      color: 'bg-blue-100 text-blue-700 border-blue-300'       },
-  { value: 2,      label: 'Bajo Revision',  color: 'bg-yellow-100 text-yellow-700 border-yellow-300' },
-  { value: 3,      label: 'Pendiente',    color: 'bg-green-100 text-green-700 border-green-300'    },
-  { value: 4,      label: 'En Proceso',  color: 'bg-yellow-100 text-yellow-700 border-yellow-300' },
-  { value: 5,      label: 'Resuelto',      color: 'bg-blue-100 text-blue-700 border-blue-300'       },
-  { value: 6,      label: 'Cerrado',    color: 'bg-green-100 text-green-700 border-green-300'    },
-  { value: 7,      label: 'Rechazado',    color: 'bg-green-100 text-green-700 border-green-300'    }
+  { value: 0,      label: 'Nuevo',      color: 'bg-blue-100 text-blue-700 border-blue-300'       },
+  { value: 1,      label: 'Bajo Revision',  color: 'bg-yellow-100 text-yellow-700 border-yellow-300' },
+  { value: 2,      label: 'Pendiente',    color: 'bg-green-100 text-green-700 border-green-300'    },
+  { value: 3,      label: 'En Proceso',  color: 'bg-yellow-100 text-yellow-700 border-yellow-300' },
+  { value: 4,      label: 'Resuelto',      color: 'bg-blue-100 text-blue-700 border-blue-300'       },
+  { value: 5,      label: 'Cerrado',    color: 'bg-green-100 text-green-700 border-green-300'    },
+  { value: 6,      label: 'Rechazado',    color: 'bg-green-100 text-green-700 border-green-300'    }
 ] as const;
 
 type ReportStatus = number;
