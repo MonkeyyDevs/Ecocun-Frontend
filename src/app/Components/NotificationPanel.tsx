@@ -1,3 +1,4 @@
+/*
 import React from "react";
 import { Link } from "react-router-dom";
 import {
@@ -93,9 +94,9 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({
     <>
       <div className="fixed inset-0 z-40" onClick={onClose}></div>
 
-      {/*  Panel Flotante */}
+  
       <div className="absolute top-16 right-4 w-80 md:w-96 bg-white rounded-xl shadow-2xl border border-gray-100 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-        {/* Cabecera */}
+      
         <div className="bg-[#1a7f4c] p-4 flex justify-between items-center text-white">
           <h3 className="font-bold text-sm">Notificaciones</h3>
           {unreadCount > 0 && (
@@ -105,7 +106,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({
           )}
         </div>
 
-        {/* Lista */}
+
         <div className="max-h-96 overflow-y-auto">
           {loading ? (
             <div className="p-8 text-center text-gray-500 text-sm">
@@ -125,10 +126,10 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({
                 key={notif.id}
                 className={`p-4 border-b border-gray-50 hover:bg-gray-100 transition-colors cursor-pointer flex gap-3 group relative ${!notif.isRead ? "bg-green-50/30" : ""}`}
               >
-                {/* Icono */}
+           
                 <div className="mt-1 flex-shrink-0">{getIcon(notif.type)}</div>
 
-                {/* Contenido */}
+                
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
                     <h4
@@ -165,7 +166,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({
           )}
         </div>
 
-        {/* Footer */}
+      
         <div className="p-3 bg-gray-50 text-center border-t border-gray-100">
           <Link
             to="/notificaciones"
@@ -181,3 +182,5 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({
 };
 
 export default NotificationPanel;
+
+*/

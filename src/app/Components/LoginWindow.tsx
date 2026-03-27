@@ -50,8 +50,8 @@ const LoginWindow = () => {
 
             console.log("Login exitoso:", message);
 
-            // 👉 Toast de éxito
-            toast.success("Inicio de sesión exitoso 🎉");
+     
+            toast.success("Inicio de sesión exitoso S");
 
             // Redirección con un pequeño delay
             setTimeout(() => {

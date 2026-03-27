@@ -3,13 +3,14 @@ import "leaflet/dist/leaflet.css";
 import styles from "./styles/Map.module.css";
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { renderToStaticMarkup } from "react-dom/server";
 import LoadingModal from "../../Components/LoadingModal.tsx";
-import { 
-    FaMapMarkedAlt, FaTrash, FaFire, FaWater, FaBiohazard, FaQuestion, FaRecycle, FaMapMarkerAlt 
+import {
+    FaMapMarkedAlt, FaTrash, FaFire, FaWater, FaBiohazard, FaQuestion, FaRecycle, FaMapMarkerAlt
 } from "react-icons/fa";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -21,7 +22,7 @@ interface Reporte {
     description: string;
     category: string | number;
     imageUrl?: string | null;
-    createdAt?: string; 
+    createdAt?: string;
 }
 
 interface CentroAcopio {
@@ -50,12 +51,43 @@ const createReactIconMarker = (IconComponent: React.ElementType, colorClass: str
     });
 };
 
+
+const createClusterCustomIcon = (cluster: L.MarkerCluster) => {
+    const count = cluster.getChildCount();
+    const size = count < 10 ? 36 : count < 100 ? 42 : 48;
+
+    return L.divIcon({
+        html: renderToStaticMarkup(
+            <div style={{
+                width: size,
+                height: size,
+                borderRadius: "50%",
+                background: "linear-gradient(135deg, #16a34a, #15803d)",
+                border: "3px solid white",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white",
+                fontWeight: "bold",
+                fontSize: count < 10 ? 14 : 12,
+            }}>
+                {count}
+            </div>
+        ),
+        className: "bg-transparent border-none",
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2],
+    });
+};
+
 const trashIcon = createReactIconMarker(FaTrash, "bg-green-500");
 const fireIcon = createReactIconMarker(FaFire, "bg-orange-500");
 const drainIcon = createReactIconMarker(FaWater, "bg-blue-500");
 const biohazardIcon = createReactIconMarker(FaBiohazard, "bg-red-600");
 const questionIcon = createReactIconMarker(FaQuestion, "bg-gray-400");
 const centerIcon = createReactIconMarker(FaRecycle, "bg-green-700");
+
 const getCategoryName = (category: string | number) => {
     const catStr = String(category);
     switch (catStr) {
@@ -63,7 +95,7 @@ const getCategoryName = (category: string | number) => {
         case "1": case "quemaDeBasura": return "Quema de basura";
         case "2": case "drenajeObstruido": return "Drenaje obstruido";
         case "3": case "derrameDeSustanciasPeligrosas": return "Derrame peligroso";
-        default: return "Otro reporte"; 
+        default: return "Otro reporte";
     }
 };
 
@@ -98,16 +130,16 @@ const getPopupIcon = (category: string | number) => {
         case "3": case "derrameDeSustanciasPeligrosas": return <FaBiohazard size={14} />;
         default: return <FaQuestion size={14} />;
     }
-}
+};
 
 const MapView: React.FC = () => {
     const [reportes, setReportes] = useState<Reporte[]>([]);
-    const [centros] = useState<CentroAcopio[]>([]); 
+    const [centros] = useState<CentroAcopio[]>([]);
     const location = useLocation();
     const [latitud, setLatitud] = useState<number | null>(null);
     const [longitud, setLongitud] = useState<number | null>(null);
     const [showLocationLoader, setShowLocationLoader] = useState(false);
-    
+
     const targetLat = location.state?.targetLat;
     const targetLng = location.state?.targetLng;
 
@@ -130,8 +162,6 @@ const MapView: React.FC = () => {
             try {
                 const token = localStorage.getItem("token");
                 const headers = token ? { Authorization: `Bearer ${token}` } : {};
-
-                // --- LLAMADA REAL A TU API ---
                 const resReports = await api.get("/api/reports/allreports", {
                     params: { page: 1, limit: 100 },
                     headers,
@@ -139,7 +169,6 @@ const MapView: React.FC = () => {
                 if (resReports.data?.data) {
                     setReportes(resReports.data.data);
                 }
-
             } catch (error) {
                 console.error(error);
             }
@@ -199,46 +228,54 @@ const MapView: React.FC = () => {
                     attribution="&copy; OpenStreetMap contributors"
                 />
 
-                {reportes.map((r) => (
-                    <Marker
-                        key={`rep-${r.id}`}
-                        position={[r.locLatitude, r.locLongitude]}
-                        icon={getIconByCategory(r.category)} 
-                    >
-                        <Popup>
-                            <div className="p-4">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white shadow-sm shrink-0 ${getPopupIconColor(r.category)}`}>
-                                         {getPopupIcon(r.category)}
+          
+                <MarkerClusterGroup
+                    iconCreateFunction={createClusterCustomIcon}
+                    maxClusterRadius={60}          // px de radio para agrupar
+                    spiderfyOnMaxZoom={true}        // al máximo zoom, abre abanico
+                    showCoverageOnHover={false}     // sin polígono azul al hover
+                    zoomToBoundsOnClick={true}      // click en cluster → hace zoom
+                    chunkedLoading                  // carga los markers en chunks (mejor performance)
+                >
+                    {reportes.map((r) => (
+                        <Marker
+                            key={`rep-${r.id}`}
+                            position={[r.locLatitude, r.locLongitude]}
+                            icon={getIconByCategory(r.category)}
+                        >
+                            <Popup>
+                                <div className="p-4">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white shadow-sm shrink-0 ${getPopupIconColor(r.category)}`}>
+                                            {getPopupIcon(r.category)}
+                                        </div>
+                                        <h3 className="font-bold text-base text-gray-800 leading-tight line-clamp-1">
+                                            {getCategoryName(r.category)}
+                                        </h3>
                                     </div>
-                                    <h3 className="font-bold text-base text-gray-800 leading-tight line-clamp-1">
-                                        {getCategoryName(r.category)}
-                                    </h3>
+
+                                    <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                                        {r.description || "Sin descripción adicional."}
+                                    </p>
+
+                                    {r.imageUrl ? (
+                                        <img
+                                            src={getImageUrl(r.imageUrl) || ""}
+                                            className="rounded-xl w-full h-36 object-cover border border-gray-100 shadow-sm"
+                                            alt="Evidencia"
+                                        />
+                                    ) : (
+                                        <div className="h-24 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-gray-400 text-xs gap-1">
+                                            <FaMapMarkerAlt size={16} className="opacity-50" />
+                                            Sin evidencia
+                                        </div>
+                                    )}
                                 </div>
-                                
-                                {/* Descripción */}
-                                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                                    {r.description || "Sin descripción adicional."}
-                                </p>
-                                
-                                {/* Imagen */}
-                                {r.imageUrl ? (
-                                    <img
-                                        src={getImageUrl(r.imageUrl) || ""}
-                                        className="rounded-xl w-full h-36 object-cover border border-gray-100 shadow-sm"
-                                        alt="Evidencia"
-                                    />
-                                ) : (
-                                    <div className="h-24 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-gray-400 text-xs gap-1">
-                                        <FaMapMarkerAlt size={16} className="opacity-50"/>
-                                        Sin evidencia
-                                    </div>
-                                )}
-                            </div>
-                        </Popup>
-                    </Marker>
-                ))}
-                
+                            </Popup>
+                        </Marker>
+                    ))}
+                </MarkerClusterGroup>
+
                 {centros.map((c) => (
                     <Marker
                         key={`center-${c.id}`}
@@ -249,14 +286,13 @@ const MapView: React.FC = () => {
                             <div className="p-4">
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-8 h-8 rounded-full flex items-center justify-center text-white shadow-sm bg-green-700 shrink-0">
-                                         <FaRecycle size={14} />
+                                        <FaRecycle size={14} />
                                     </div>
                                     <h3 className="font-bold text-base text-gray-800 leading-tight line-clamp-1">{c.name}</h3>
                                 </div>
-
                                 <div className="space-y-3">
                                     <p className="text-xs text-gray-500 flex items-start gap-2">
-                                        <FaMapMarkerAlt className="shrink-0 mt-0.5 text-green-700" size={12} /> 
+                                        <FaMapMarkerAlt className="shrink-0 mt-0.5 text-green-700" size={12} />
                                         {c.address}
                                     </p>
                                     <div className="bg-green-50 p-3 rounded-lg border border-green-100">
@@ -264,7 +300,7 @@ const MapView: React.FC = () => {
                                         <p className="text-xs text-green-700 leading-relaxed">{c.acceptedMaterials.join(", ")}</p>
                                     </div>
                                     <p className="text-xs text-center text-gray-500 font-medium bg-gray-100 py-1.5 rounded-full">
-                                        ⏰ {c.openingTime} - {c.closingTime}
+                                         {c.openingTime} - {c.closingTime}
                                     </p>
                                 </div>
                             </div>
@@ -278,7 +314,6 @@ const MapView: React.FC = () => {
                     <h4 className="text-[11px] font-bold text-gray-800 mb-3 text-center uppercase tracking-widest border-b border-gray-100 pb-2">
                         Tipos de Reportes
                     </h4>
-                    
                     <div className="flex flex-wrap justify-around items-center gap-2">
                         <LeyendaItem icon={FaTrash} color="bg-green-500" label="Basurero" />
                         <LeyendaItem icon={FaFire} color="bg-orange-500" label="Quema" />
@@ -289,7 +324,6 @@ const MapView: React.FC = () => {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 };

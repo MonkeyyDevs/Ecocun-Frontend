@@ -18,9 +18,9 @@ export default defineConfig({
       },
 
       manifest: {
-        name: "EcoCun",
-        short_name: "EcoCun",
-        description: "Proyecto de desarrollo de EcoCun",
+        name: "Ecocun",
+        short_name: "Ecocun",
+        description: "Proyecto de desarrollo de Ecocun",
         theme_color: "#0ea5e9",
       },
 

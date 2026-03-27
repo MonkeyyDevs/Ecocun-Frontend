@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 export default function Layout() {
   return (
     <div className="min-h-dvh bg-gray-50 text-gray-900 ">
-      <nav className="sticky top-0 z-40 border-b border-gray-200/70 bg-white/80 backdrop-blur">
+      <nav className="sticky top-0 z-40 border-b  bg-white/80 backdrop-blur">
         <NavBar></NavBar>
       </nav>
       {/* CONTENIDO */}
