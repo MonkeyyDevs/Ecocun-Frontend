@@ -41,10 +41,10 @@ interface ExtendedReport extends ReportCardProps {
 
 const mapRawToStatus = (raw: number | string): number => {
   const num = Number(raw);
-  if (!isNaN(num) && num >= 1 && num <= 7) return num;
+  if (!isNaN(num) && num >= 0 && num <= 6) return num;
   const map: Record<string, number> = {
-    'nuevo': 1, 'bajo revision': 2, 'pendiente': 3,
-    'en proceso': 4, 'resuelto': 5, 'cerrado': 6, 'rechazado': 7,
+    'nuevo': 0, 'bajo revision': 1, 'pendiente': 2,
+    'en proceso': 3, 'resuelto': 4, 'cerrado': 5, 'rechazado': 6,
   };
   return map[String(raw).toLowerCase()] ?? 1;
 };
