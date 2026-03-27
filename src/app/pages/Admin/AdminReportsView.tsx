@@ -28,7 +28,7 @@ interface ReportFromApi {
   category: number | string;
   status: number | string;
   createdAt: string;
-  imageUrl?: string;
+  blobName?: string;
 }
 
 interface ExtendedReport extends ReportCardProps {
@@ -43,10 +43,15 @@ const mapRawToStatus = (raw: number | string): number => {
   const num = Number(raw);
   if (!isNaN(num) && num >= 0 && num <= 6) return num;
   const map: Record<string, number> = {
-    'nuevo': 0, 'bajo revision': 1, 'pendiente': 2,
-    'en proceso': 3, 'resuelto': 4, 'cerrado': 5, 'rechazado': 6,
+    'new': 0,         'nuevo': 0,
+    'underreview': 1, 'bajo revision': 1,
+    'pending': 2,     'pendiente': 2,
+    'inprogress': 3,  'en proceso': 3,
+    'resolved': 4,    'resuelto': 4,
+    'closed': 5,      'cerrado': 5,
+    'rejected': 6,    'rechazado': 6,
   };
-  return map[String(raw).toLowerCase()] ?? 1;
+  return map[String(raw).toLowerCase()] ?? 0;
 };
 
 const AdminReportsView: React.FC = () => {
@@ -77,7 +82,7 @@ const AdminReportsView: React.FC = () => {
             caso: mapCategoryToString(r.category),
             status: mapStatusToString(r.status),
             description: r.description,
-            imageUrl: getImageUrl(r.imageUrl), 
+            blobName: getImageUrl(r.blobName), 
             lat: r.locLatitude,
             lon: r.locLongitude,
           }));
@@ -185,9 +190,9 @@ const AdminReportsView: React.FC = () => {
 
             {/* Imagen */}
             <div className="mb-4 bg-gray-100 h-40 rounded-lg flex items-center justify-center overflow-hidden border border-gray-200">
-              {selectedReport.imageUrl ? (
+              {selectedReport.blobName ? (
                 <img
-                  src={selectedReport.imageUrl}
+                  src={selectedReport.blobName}
                   className="w-full h-full object-cover"
                   alt="evidencia"
                 />
