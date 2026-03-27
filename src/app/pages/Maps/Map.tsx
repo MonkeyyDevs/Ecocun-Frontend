@@ -21,13 +21,8 @@ interface Reporte {
     locLongitude: number;
     description: string;
     category: string | number;
-<<<<<<< HEAD
     blobName?: string | null;
-    createdAt?: string; 
-=======
-    imageUrl?: string | null;
     createdAt?: string;
->>>>>>> kev
 }
 
 interface CentroAcopio {
@@ -263,9 +258,9 @@ const MapView: React.FC = () => {
                                         {r.description || "Sin descripción adicional."}
                                     </p>
 
-                                    {r.imageUrl ? (
+                                    {r.blobName ? (
                                         <img
-                                            src={getImageUrl(r.imageUrl) || ""}
+                                            src={getImageUrl(r.blobName) || ""}
                                             className="rounded-xl w-full h-36 object-cover border border-gray-100 shadow-sm"
                                             alt="Evidencia"
                                         />
@@ -276,38 +271,11 @@ const MapView: React.FC = () => {
                                         </div>
                                     )}
                                 </div>
-<<<<<<< HEAD
-                                
-                                {/* Descripción */}
-                                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                                    {r.description || "Sin descripción adicional."}
-                                </p>
-                                
-                                {/* Imagen */}
-                                {r.blobName ? (
-                                    <img
-                                        src={getImageUrl(r.blobName) || ""}
-                                        className="rounded-xl w-full h-36 object-cover border border-gray-100 shadow-sm"
-                                        alt="Evidencia"
-                                    />
-                                ) : (
-                                    <div className="h-24 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-gray-400 text-xs gap-1">
-                                        <FaMapMarkerAlt size={16} className="opacity-50"/>
-                                        Sin evidencia
-                                    </div>
-                                )}
-                            </div>
-                        </Popup>
-                    </Marker>
-                ))}
-                
-=======
                             </Popup>
                         </Marker>
                     ))}
                 </MarkerClusterGroup>
 
->>>>>>> kev
                 {centros.map((c) => (
                     <Marker
                         key={`center-${c.id}`}
