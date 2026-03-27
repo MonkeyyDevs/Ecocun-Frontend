@@ -8,13 +8,13 @@ import toast from 'react-hot-toast';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const STATUS_OPTIONS = [
-  { value: 0,      label: 'Nuevo',      color: 'bg-blue-100 text-blue-700 border-blue-300'       },
+  { value: 0,      label: 'Nuevo',          color: 'bg-blue-100 text-blue-700 border-blue-300'       },
   { value: 1,      label: 'Bajo Revision',  color: 'bg-yellow-100 text-yellow-700 border-yellow-300' },
-  { value: 2,      label: 'Pendiente',    color: 'bg-green-100 text-green-700 border-green-300'    },
-  { value: 3,      label: 'En Proceso',  color: 'bg-yellow-100 text-yellow-700 border-yellow-300' },
-  { value: 4,      label: 'Resuelto',      color: 'bg-blue-100 text-blue-700 border-blue-300'       },
-  { value: 5,      label: 'Cerrado',    color: 'bg-green-100 text-green-700 border-green-300'    },
-  { value: 6,      label: 'Rechazado',    color: 'bg-green-100 text-green-700 border-green-300'    }
+  { value: 2,      label: 'Pendiente',      color: 'bg-orange-400 text-white border-orange-300'    },
+  { value: 3,      label: 'En Proceso',     color: 'bg-blue-500 text-white border-blue-300' },
+  { value: 4,      label: 'Resuelto',       color: 'bg-green-600 text-white border-green-300'       },
+  { value: 5,      label: 'Cerrado',        color: 'bg-gray-600 text-white border-gray-300'    },
+  { value: 6,      label: 'Rechazado',      color: 'bg-red-700 text-white border-red-300'    }
 ] as const;
 
 type ReportStatus = number;
@@ -119,7 +119,7 @@ const AdminReportsView: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json(); // { response: "succesfull", newState: "..." }
-        toast.success(`Estado actualizado a "${data.newStatus}".`);
+        toast.success(`Estado actualizado a "${mapStatusToString(data.newStatus)}".`);
         setSelectedReport(null);
         fetchReports();
       } else {

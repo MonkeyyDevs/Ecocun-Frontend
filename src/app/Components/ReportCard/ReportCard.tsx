@@ -17,12 +17,20 @@ const ReportCard: React.FC<ReportCardProps> = ({
   folio, ubicacion, caso, status, onViewDetails
 }) => {
 
+
+  const STATUS_OPTIONS = [
+  { value: 0,      label: 'Nuevo',          color: 'bg-blue-100 text-blue-700 border-blue-300'       },
+  { value: 1,      label: 'Bajo Revision',  color: 'bg-yellow-100 text-yellow-700 border-yellow-300' },
+  { value: 2,      label: 'Pendiente',      color: 'bg-orange-400 text-white border-orange-300'    },
+  { value: 3,      label: 'En Proceso',     color: 'bg-blue-500 text-white border-blue-300' },
+  { value: 4,      label: 'Resuelto',       color: 'bg-green-600 text-white border-green-300'       },
+  { value: 5,      label: 'Cerrado',        color: 'bg-gray-600 text-white border-gray-300'    },
+  { value: 6,      label: 'Rechazado',      color: 'bg-red-700 text-white border-red-300'    }
+] as const;
   // Colores estilo "Badge" de tu imagen
   const getStatusColor = (s: string) => {
-    if (s === 'Nuevo') return 'bg-[#F87171]'; // Rojo salmón
-    if (s === 'En proceso') return 'bg-[#4ADE80]'; // Verde claro
-    if (s === 'Resueltos') return 'bg-[#818CF8]'; // Morado suave
-    return 'bg-gray-400';
+    const statusOption = STATUS_OPTIONS.find(opt => opt.label === s);
+    return statusOption ? statusOption.color : 'bg-gray-400';
   };
 
   return (
@@ -30,7 +38,7 @@ const ReportCard: React.FC<ReportCardProps> = ({
     <div className="bg-gray-100 rounded-2xl p-5 mb-4 relative shadow-sm">
 
       {/* Badge Flotante */}
-      <span className={`${getStatusColor(status)} text-white text-xs font-bold px-3 py-1 rounded-full absolute top-5 right-5`}>
+      <span className={`${getStatusColor(status)} text-xs font-bold px-3 py-1 rounded-full absolute top-5 right-5`}>
         {status}
       </span>
 
