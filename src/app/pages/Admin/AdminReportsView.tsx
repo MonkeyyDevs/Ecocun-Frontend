@@ -8,12 +8,16 @@ import toast from 'react-hot-toast';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const STATUS_OPTIONS = [
-  { value: 'Nuevo',      label: 'Nuevo',      color: 'bg-blue-100 text-blue-700 border-blue-300'       },
-  { value: 'En proceso', label: 'En Proceso',  color: 'bg-yellow-100 text-yellow-700 border-yellow-300' },
-  { value: 'Resuelto',   label: 'Resuelto',    color: 'bg-green-100 text-green-700 border-green-300'    },
+  { value: 1,      label: 'Nuevo',      color: 'bg-blue-100 text-blue-700 border-blue-300'       },
+  { value: 2,      label: 'Bajo Revision',  color: 'bg-yellow-100 text-yellow-700 border-yellow-300' },
+  { value: 3,      label: 'Pendiente',    color: 'bg-green-100 text-green-700 border-green-300'    },
+  { value: 4,      label: 'En Proceso',  color: 'bg-yellow-100 text-yellow-700 border-yellow-300' },
+  { value: 5,      label: 'Resuelto',      color: 'bg-blue-100 text-blue-700 border-blue-300'       },
+  { value: 6,      label: 'Cerrado',    color: 'bg-green-100 text-green-700 border-green-300'    },
+  { value: 7,      label: 'Rechazado',    color: 'bg-green-100 text-green-700 border-green-300'    }
 ] as const;
 
-type ReportStatus = typeof STATUS_OPTIONS[number]['value'];
+type ReportStatus = number;
 
 interface ReportFromApi {
   id: number;
@@ -35,25 +39,21 @@ interface ExtendedReport extends ReportCardProps {
   [key: string]: any;
 }
 
-const mapRawToStatus = (raw: number | string): ReportStatus => {
-  const map: Record<string, ReportStatus> = {
-    'nuevo': 'Nuevo',
-    '0': 'Nuevo',
-    'en proceso': 'En proceso',
-    'inprogress': 'En proceso',
-    '1': 'En proceso',
-    'resuelto': 'Resuelto',
-    'resolved': 'Resuelto',
-    '2': 'Resuelto',
+const mapRawToStatus = (raw: number | string): number => {
+  const num = Number(raw);
+  if (!isNaN(num) && num >= 1 && num <= 7) return num;
+  const map: Record<string, number> = {
+    'nuevo': 1, 'bajo revision': 2, 'pendiente': 3,
+    'en proceso': 4, 'resuelto': 5, 'cerrado': 6, 'rechazado': 7,
   };
-  return map[String(raw).toLowerCase()] ?? 'Nuevo';
+  return map[String(raw).toLowerCase()] ?? 1;
 };
 
 const AdminReportsView: React.FC = () => {
   const [reports, setReports] = useState<ExtendedReport[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedReport, setSelectedReport] = useState<ExtendedReport | null>(null);
-  const [pendingStatus, setPendingStatus] = useState<ReportStatus>('Nuevo');
+  const [pendingStatus, setPendingStatus] = useState<ReportStatus>(1);
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
 
@@ -103,18 +103,18 @@ const AdminReportsView: React.FC = () => {
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch(`${API_URL}/api/reporte/cambiar-estado/${selectedReport.id}`, {
-        method: 'POST',
+      const response = await fetch(`${API_URL}/api/reports/cambiar-estado/${selectedReport.id}`, {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ nuevoEstado: pendingStatus }),
+        body: JSON.stringify({ newStatus: pendingStatus }),
       });
 
       if (response.ok) {
         const data = await response.json(); // { response: "succesfull", newState: "..." }
-        toast.success(`Estado actualizado a "${data.newState}".`);
+        toast.success(`Estado actualizado a "${data.newStatus}".`);
         setSelectedReport(null);
         fetchReports();
       } else {
@@ -218,21 +218,17 @@ const AdminReportsView: React.FC = () => {
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
               Cambiar estado
             </p>
-            <div className="grid grid-cols-3 gap-2 mb-4">
+            <select
+              value={pendingStatus}
+              onChange={e => setPendingStatus(Number(e.target.value))}
+              className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm mb-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
               {STATUS_OPTIONS.map(opt => (
-                <button
-                  key={opt.value}
-                  onClick={() => setPendingStatus(opt.value)}
-                  className={`py-2 px-1 rounded-xl text-xs font-bold border-2 transition-all ${
-                    pendingStatus === opt.value
-                      ? `${opt.color} border-current shadow-sm scale-105`
-                      : 'bg-gray-50 text-gray-400 border-gray-200 hover:border-gray-300'
-                  }`}
-                >
+                <option key={opt.value} value={opt.value}>
                   {opt.label}
-                </button>
+                </option>
               ))}
-            </div>
+            </select>
 
             {/* Botón guardar */}
             <button
