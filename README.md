@@ -1,4 +1,4 @@
-#  EcoCun — Proyecto React PWA con Vite
+#  Ecocun — Proyecto React PWA con Vite
 
 Aplicación creada con **React + TypeScript + Vite + TailwindCSS**, estructurada de manera simple para **principiantes**.  
 Incluye sistema de **rutas**, **tema claro/oscuro** y soporte **PWA (Progressive Web App)**.

@@ -58,7 +58,7 @@ const OptionsView: React.FC = () => {
           </div>
         </div>
 
-       {/* <GamificationSection points={puntos} coins={monedas} /> */}
+        <GamificationSection points={puntos} coins={monedas} /> 
 
         {/* Menú Mis Reportes */}
         <div className="bg-white rounded-xl shadow-sm mb-4 overflow-hidden border border-gray-100">
@@ -70,18 +70,6 @@ const OptionsView: React.FC = () => {
                     <FaFileAlt className="w-5 h-5 text-blue-500" />
                   </div>
                   <span className="text-gray-700 font-medium">Mis reportes</span>
-                </div>
-                <FaChevronRight className="w-4 h-4 text-gray-400" />
-              </Link>
-            </li>
-            {/* Mi Perfil*/}
-            <li>
-              <Link to="/profile-info" className="flex items-center justify-between p-4 w-full text-left border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="bg-green-50 p-2 rounded-lg">
-                    <FaUserAlt className="w-5 h-5 text-green-600" />
-                  </div>
-                  <span className="text-gray-700 font-medium">Mi Perfil</span>
                 </div>
                 <FaChevronRight className="w-4 h-4 text-gray-400" />
               </Link>

@@ -29,7 +29,7 @@ const AppRoutes: React.FC = () => {
       path: "*",
       element: <Navigate to="/not-found" replace />,
     },
-  ];
+  ];  
   
   return useRoutes(routes);
 };
